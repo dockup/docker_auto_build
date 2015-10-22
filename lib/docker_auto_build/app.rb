@@ -2,7 +2,6 @@ require 'sinatra'
 require 'json'
 require 'docker_auto_build/build_job'
 require 'docker_auto_build/webhook_callback'
-require 'docker_auto_build/github_comment_callback'
 
 module DockerAutoBuild
   BUILD_BRANCHES = ENV['BUILD_BRANCHES'].to_s.split(',').collect(&:strip)
@@ -27,21 +26,14 @@ module DockerAutoBuild
       verify_signature(payload_body)
       payload = JSON.parse(payload_body)
 
-      if payload['pull_request']
-        comments_url = payload['pull_request']['comments_url']
-        repository_url = payload['repository']['clone_url']
-        branch = payload['pull_request']['head']['ref']
+      if payload['pusher']
+        return if payload['commits'].empty?
         return unless BUILD_BRANCHES.include? branch
 
-        case payload['action']
-        when 'open', 'synchronize', 'reopen'
-          callbacks = [GithubCommentCallback.new(comments_url)]
-          BuildJob.new.async.perform(
-            repository_url: repository_url,
-            branch: branch,
-            callbacks: callbacks
-          )
-        end
+        BuildJob.new.async.perform(
+          repository_url: repository_url,
+          branch: branch
+        )
       end
     end
 
