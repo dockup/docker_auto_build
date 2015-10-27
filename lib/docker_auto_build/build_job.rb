@@ -6,7 +6,7 @@ module DockerAutoBuild
   class BuildJob
     include SuckerPunch::Job
 
-    def perform(repository_url:, branch: 'master', config_file: 'docker_auto_build.yml', image_name:, callbacks: [])
+    def perform(repository_url:, branch: 'master', config_file: 'docker_auto_build.yml', image_name: nil, callbacks: [])
       @branch = branch
       @repository_url = repository_url
       @random_directory_name = SecureRandom.hex
@@ -27,8 +27,8 @@ module DockerAutoBuild
     private
 
     def clone_repository
-      git_clone_command = Command.run(command: ['git', 'clone', "--branch=#{@branch}", '--depth=1', @repository, @random_directory_name])
-      raise "Cannot clone repositroy: #{@repository}, branch: #{@branch}"
+      git_clone_command = Command.run(command: ['git', 'clone', "--branch=#{@branch}", '--depth=1', @repository_url, @random_directory_name])
+      raise "Cannot clone repositroy: #{@repository_url}, branch: #{@branch}"
     end
 
     def docker_build
