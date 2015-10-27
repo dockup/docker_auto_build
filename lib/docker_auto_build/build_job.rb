@@ -11,7 +11,7 @@ module DockerAutoBuild
       @repository_url = repository_url
       @random_directory_name = SecureRandom.hex
       @config_file = config_file
-      @image_name = image_name || "#{get_project_name_from_repo_url}:#{@branch}"
+      @image_name = image_name
 
       clone_repository
       docker_build

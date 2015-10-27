@@ -17,7 +17,7 @@ module DockerAutoBuild
       BuildJob.new.async.perform(
         repository_url: json['repository_url'],
         branch: json['branch'],
-        callbacks: [WebhookCallback.new(post_url)]
+        callbacks: [WebhookCallback.new(post_url)] if post_url
       )
     end
 
