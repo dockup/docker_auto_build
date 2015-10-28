@@ -18,6 +18,7 @@ module DockerAutoBuild
       docker_push
       docker_delete_image
 
+      puts "Successfully built and pushed docker image #{@image_name}"
       callbacks.each{|c| c.build_success(@repository_url, @branch, @image_name)}
     rescue StandardError => e
       reason = e.message

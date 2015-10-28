@@ -16,15 +16,15 @@ images to a docker registry.
 
 ## Usage
 
-Set the following ENV vars:
+>Set the following ENV vars:
 
-```bash
-export BUILD_BRANCHES=<comma separated string of branches for which you need docker images to be built when somethig is pushed (when using github webhooks)>
-export GITHUB_WEBHOOK_SECRET = <Secret used to configure github webhook (if using github webhooks)>
-export GITHUB_OAUTH_TOKEN = <OAuth token which will be used to post comments on PRs (if using github webhooks)>
-```
+>```bash
+>export BUILD_BRANCHES=<comma separated string of branches for which you need docker images to be built when somethig is pushed (when using github webhooks)>
+>export GITHUB_WEBHOOK_SECRET = <Secret used to configure github webhook (if using github webhooks)>
+>export GITHUB_OAUTH_TOKEN = <OAuth token which will be used to post comments on PRs (if using github webhooks)>
+>```
 
-Next, add your(or create a new github user for this) Github oauth token in `~/.netrc` like so:
+Add your(or create a new github user for this) Github oauth token in `~/.netrc` like so:
 
     machine github.com login <github oauth token> password
 
@@ -37,3 +37,13 @@ forget to do that either.
 And run the server
 
     $ docker_auto_build
+
+Send an API request to `localhost:8000/build` like so:
+
+```
+curl -XPOST  -d '{"repository_url":"https://github.com/repo/project.git","branch":"master","image_name":"my.dockerhub:5000/image_name:tag"}' -H "Content-Type: application/json" localhost:8000/build
+```
+
+## License
+
+MIT
