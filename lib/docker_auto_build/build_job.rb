@@ -70,8 +70,9 @@ module DockerAutoBuild
     #end
 
     def docker_push
+      puts "Pushing image #{@image_name.inspect}"
       push_command = Command.run(command: ['docker', 'push', @image_name])
-      raise "Cannot push docker image #{@image_name}. Logs: #{push_command.output}"
+      raise "Cannot push docker image #{@image_name}. Logs: #{push_command.output}" unless push_command.success?
     end
 
     def docker_delete_image
