@@ -21,6 +21,8 @@ module DockerAutoBuild
       callbacks.each{|c| c.build_success(@repository_url, @branch, @image_name)}
     rescue StandardError => e
       reason = e.message
+      puts "Cannot build image for #{@repository_url} : #{@branch}. Reason: #{reason}"
+      puts e.backtrace
       callbacks.each{|c| c.build_failure(@repository_url, @branch, reason)}
     ensure
       FileUtils.rm_rf @random_directory_name
