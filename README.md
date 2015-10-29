@@ -32,7 +32,7 @@ for which you want to enable automated image builds:
 
 Remember the secret that you entered, we'll need it in the next step.
 
-Set the following ENV variable before running docker_auto_build :
+Set the following ENV variables before running docker_auto_build :
 
 ```bash
 export GITHUB_WEBHOOK_SECRET = <Secret used when configuring github webhook>

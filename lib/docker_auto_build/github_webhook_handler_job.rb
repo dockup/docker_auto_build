@@ -12,7 +12,7 @@ module DockerAutoBuild
 
       repository_url = payload['repository']['clone_url']
       branch = payload['ref'].match('refs\/heads\/(.*)')[1]
-      config_file_url = github_content_url(branch, 'docker_auto_build.yml')
+      config_file_url = github_content_url(branch, payload['repository']['contents_url'], 'docker_auto_build.yml')
       config = read_config_from_github(config_file_url)
       build_branches = config['branches']
       raise "#{branch} is not one of #{build_branches.to_s}" unless build_branches.include?(branch)
@@ -29,8 +29,8 @@ module DockerAutoBuild
 
     private
 
-    def github_content_url(branch, path)
-      base_url = URITemplate.new(payload['repository']['contents_url']).expand(path: path)
+    def github_content_url(branch, contents_url, path)
+      base_url = URITemplate.new(contents_url).expand(path: path)
       "#{base_url}?ref=#{branch}"
     end
 
