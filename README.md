@@ -52,6 +52,7 @@ branches: ['master', 'development']
 
     $ git clone https://github.com/code-mancers/docker_auto_build.git
     $ cd docker_auto_build
+    $ bundle install
     $ ruby exe/docker_auto_build
 
 Send an API request to `localhost:8000/build` like so:

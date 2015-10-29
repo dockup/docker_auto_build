@@ -2,7 +2,7 @@ require 'sinatra'
 require 'json'
 require 'uri_template'
 require 'docker_auto_build/build_job'
-require 'docker_build_command/github_webhook_handler_job'
+require 'docker_auto_build/github_webhook_handler_job'
 require 'docker_auto_build/webhook_callback'
 
 module DockerAutoBuild
