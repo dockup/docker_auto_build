@@ -43,36 +43,12 @@ module DockerAutoBuild
 
     def docker_build
       Dir.chdir @random_directory_name do
-        if File.exist?(@config_file)
-          #@config = YAML.load_file(@config_file) || {}
-          #build_from_config
-          puts "Not yet!"
-        else
-          docker_build_command = Command.run(command: ['docker', 'build', '-t', @image_name, '.'])
-          unless docker_build_command.success?
-            raise "Cannot build docker image using docker build command. Logs: #{docker_build_command.output}"
-          end
+        docker_build_command = Command.run(command: ['docker', 'build', '-t', @image_name, '.'])
+        unless docker_build_command.success?
+          raise "Cannot build docker image using docker build command. Logs: #{docker_build_command.output}"
         end
       end
     end
-
-    #def build_from_config
-      #file = @config['file'] || 'docker-compose.yml'
-      #command = @config['command']
-      #commit_service = @config['commit']
-
-      #up_command = Command.run(command: ['docker-compose', '-f', file, 'up', '-d'])
-      #raise "Cannot start services using docker-compose up. Logs: #{up_command.output}" unless up_command.success?
-      #command.each do |service, command|
-        #run_command = Command.run(command: ['docker-compose', '-f', file, 'run', service, command.split(' ').each(&:strip)])
-        #raise "Cannot run command #{command} in service #{service}. Log: #{run_command.output}" unless run_command.success?
-      #end
-      #Command.run(command: ['docker-compose', '-f', file, 'stop'])
-      #ps_command = Command.run(command: ["docker-compose", '-f', file, "ps", "-q", commit_service])
-      #container_id = ps_command.output.strip
-      #Command.run(command: ['docker', 'commit', container_id, @image_name])
-      #Command.run(command: ['docker-compose', '-f', file, 'rm', '-v'])
-    #end
 
     def docker_push
       puts "Pushing image #{@image_name.inspect}"
