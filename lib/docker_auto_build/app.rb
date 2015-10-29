@@ -8,7 +8,7 @@ require 'docker_auto_build/webhook_callback'
 module DockerAutoBuild
   BUILD_BRANCHES = ENV['BUILD_BRANCHES'].to_s.split(',').collect(&:strip)
   class App < Sinatra::Base
-    set :port, 8000
+    set :port, (ENV['PORT'] || 8000)
     set :bind, '0.0.0.0'
 
     post '/build' do
