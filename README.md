@@ -30,15 +30,7 @@ for which you want to enable automated image builds:
 
 ![github-webhook-configuration](https://s3-ap-southeast-1.amazonaws.com/uploads-ap.hipchat.com/39906/538857/V2BN0dDNhrTnuRO/upload.png)
 
-Remember the secret that you entered, we'll need it in the next step.
-
-Set the following ENV variables before running docker_auto_build :
-
-```bash
-export GITHUB_WEBHOOK_SECRET = <Secret used when configuring github webhook>
-export GITHUB_OAUTH_TOKEN = <OAuth token of Github user>
-export DOCKER_REGISTRY_HOST = <Docker registry host>
-```
+Remember the secret that you entered, we'll need it later.
 
 Also, if you want only specific branches of a repository to be built, you
 can add a file to your project repository root named `docker_auto_build.yml`
@@ -48,6 +40,16 @@ containing the following:
 branches: ['master', 'development']
 ```
 
+### Environment Variables
+
+Set the following ENV variables before running docker_auto_build :
+
+```bash
+export GITHUB_WEBHOOK_SECRET = <Secret used when configuring github webhook (if using github webhooks)>
+export GITHUB_OAUTH_TOKEN = <OAuth token of Github user (if using github webhooks)>
+export DOCKER_REGISTRY_HOST = <Docker registry host to with images are pushed>
+export PORT= <Override default port of docker_auto_build (8000)>
+```
 
 ## Usage
 
