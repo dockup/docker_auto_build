@@ -7,22 +7,12 @@ images to a docker registry.
 
 ## Requirements
 
-1. docker - For building docker images
-2. docker-compose - For building complex docker images which need other services to be built
+1. ruby 2.1 or later - For running docker_auto_build
+2. docker - For building docker images
+3. docker-compose - For building complex docker images which need other services to be built
 
-## Installation
 
-    $ gem install docker_auto_build
-
-## Usage
-
->Set the following ENV vars:
-
->```bash
->export BUILD_BRANCHES=<comma separated string of branches for which you need docker images to be built when somethig is pushed (when using github webhooks)>
->export GITHUB_WEBHOOK_SECRET = <Secret used to configure github webhook (if using github webhooks)>
->export GITHUB_OAUTH_TOKEN = <OAuth token which will be used to post comments on PRs (if using github webhooks)>
->```
+## Configuration
 
 Add your(or create a new github user for this) Github oauth token in `~/.netrc` like so:
 
@@ -33,10 +23,36 @@ Also add the machine's public key to the github account that has access to clone
 Also if you need to add any `/etc/hosts` entry for your docker registry, don't
 forget to do that either.
 
+### Automated builds using Github Webhooks
 
-And run the server
+First, set up a Github webhook by going to the settings page of the repositories
+for which you want to enable automated image builds:
 
-    $ docker_auto_build
+![github-webhook-configuration](https://s3-ap-southeast-1.amazonaws.com/uploads-ap.hipchat.com/39906/538857/V2BN0dDNhrTnuRO/upload.png)
+
+Remember the secret that you entered, we'll need it in the next step.
+
+Set the following ENV variable before running docker_auto_build :
+
+```bash
+export GITHUB_WEBHOOK_SECRET = <Secret used when configuring github webhook>
+export GITHUB_OAUTH_TOKEN = <OAuth token of Github user>
+```
+
+Also, if you want only specific branches of a repository to be built, you
+can add a file to your project repository root named `docker_auto_build.yml`
+containing the following:
+
+```yaml
+branches: ['master', 'development']
+```
+
+
+## Usage
+
+    $ git clone https://github.com/code-mancers/docker_auto_build.git
+    $ cd docker_auto_build
+    $ ruby exe/docker_auto_build
 
 Send an API request to `localhost:8000/build` like so:
 

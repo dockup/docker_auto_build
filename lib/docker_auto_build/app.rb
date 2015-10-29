@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'json'
+require 'uri_template'
 require 'docker_auto_build/build_job'
+require 'docker_build_command/github_webhook_handler_job'
 require 'docker_auto_build/webhook_callback'
 
 module DockerAutoBuild
@@ -27,16 +29,10 @@ module DockerAutoBuild
       verify_signature(payload_body)
       payload = JSON.parse(payload_body)
 
-      if payload['pusher']
-        return if payload['commits'].empty?
-        return unless BUILD_BRANCHES.include? branch
-
-        BuildJob.new.async.perform(
-          repository_url: repository_url,
-          branch: branch
-        )
-      end
+      GithubWebhookHandlerJob.new.async.perform(payload)
     end
+
+    private
 
     def verify_signature(payload_body)
       signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['GITHUB_WEBHOOK_SECRET'], payload_body)

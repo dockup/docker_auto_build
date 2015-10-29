@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sinatra", "~> 1.4"
   spec.add_dependency "sucker_punch", "~> 1.5"
   spec.add_dependency "httparty", "~> 0.13"
+  spec.add_dependency "uri_template"
 end
