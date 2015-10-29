@@ -10,7 +10,7 @@ module DockerAutoBuild
       raise "Github Webhook event doesn't seem to be a push event" unless payload['pusher']
       raise "Commits are empty for this push" if payload['commits'].empty?
 
-      repository_url = payload['repositroy']['clone_url']
+      repository_url = payload['repository']['clone_url']
       branch = payload['ref'].match('refs\/heads\/(.*)')[1]
       config_file_url = github_content_url(branch, 'docker_auto_build.yml')
       config = read_config_from_github(config_file_url)
@@ -30,7 +30,7 @@ module DockerAutoBuild
     private
 
     def github_content_url(branch, path)
-      base_url = URITemplate.new(payload['repositroy']['contents_url']).expand(path: path)
+      base_url = URITemplate.new(payload['repository']['contents_url']).expand(path: path)
       "#{base_url}?ref=#{branch}"
     end
 
