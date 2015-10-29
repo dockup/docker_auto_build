@@ -37,6 +37,7 @@ Set the following ENV variables before running docker_auto_build :
 ```bash
 export GITHUB_WEBHOOK_SECRET = <Secret used when configuring github webhook>
 export GITHUB_OAUTH_TOKEN = <OAuth token of Github user>
+export DOCKER_REGISTRY_HOST = <Docker registry host>
 ```
 
 Also, if you want only specific branches of a repository to be built, you
