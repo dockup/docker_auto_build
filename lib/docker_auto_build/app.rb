@@ -22,6 +22,7 @@ module DockerAutoBuild
         image_name: json['image_name'],
         callbacks: (post_url ? [WebhookCallback.new(post_url)] : [])
       )
+      'OK'
     end
 
     post '/gh-webhook' do
@@ -30,6 +31,7 @@ module DockerAutoBuild
       payload = JSON.parse(payload_body)
 
       GithubWebhookHandlerJob.new.async.perform(payload)
+      'OK'
     end
 
     private
