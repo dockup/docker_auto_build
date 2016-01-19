@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+ENV['PORT'] = '8001'
+ENV['DOCKER_REGISTRY_HOST'] = '<organization_name>.dockerhub:5000'
+ENV['GITHUB_WEBHOOK_SECRET'] = '<use a random string and use it later as secret when configuring github webhooks>'
+ENV['GITHUB_OAUTH_TOKEN'] = '<oauth token of github bot user>'
+
+begin
+  require 'docker_auto_build/app.rb'
+rescue LoadError => e
+  require 'rubygems'
+  path = File.expand_path '../../lib', __FILE__
+  $:.unshift(path) if File.directory?(path) && !$:.include?(path)
+  require 'docker_auto_build/app.rb'
+end
